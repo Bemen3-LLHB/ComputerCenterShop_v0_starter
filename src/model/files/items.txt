@@ -1,0 +1,4 @@
+Item:SSD 1TB;Wholesaler Price:60.00;Stock:8;
+Item:Memoria RAM 16GB;Wholesaler Price:35.00;Stock:12;
+Item:Portatil oficina;Wholesaler Price:420.00;Stock:3;
+Item:Teclat mecanic;Wholesaler Price:45.00;Stock:6;
