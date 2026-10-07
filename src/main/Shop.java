@@ -124,7 +124,8 @@ public class Shop {
 			System.out.println("7) Veure vendes");
 			System.out.println("8) Veure venda total");
 			System.out.println("9) Eliminar article");
-			System.out.println("10) Sortir del programa");
+			System.out.println("10) Desar inventari");
+			System.out.println("11) Sortir del programa");
 			System.out.print("Seleccioneu una opció: ");
 			opcion = scanner.nextInt();
 
@@ -166,6 +167,10 @@ public class Shop {
 				break;
 
 			case 10:
+				shop.saveInventory();
+				break;
+
+			case 11:
 				System.out.println("Tancant el programa ...");
 				exit = true;
 				break;
@@ -215,69 +220,42 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
-		// locate file, path and name
 		File f = new File(System.getProperty("user.dir") + File.separator + "files" + File.separator + ITEMS_FILE);
-		
-		try {			
-			// wrap in proper classes
-			FileReader fr;
-			fr = new FileReader(f);				
-			BufferedReader br = new BufferedReader(fr);
-			
-			// read first line
-			String line = br.readLine();
-			
-			// process and read next line until end of file
-			while (line != null) {
-				// split in sections
-				String[] sections = line.split(";");
+
+		// TODO RA1-ISSUE-03: obrir el fitxer, llegir-lo linia a linia i afegir cada producte a inventory.
+		try {
+			BufferedReader bf = new BufferedReader(new FileReader(f));
+			String Linea = "";
+			while(Linea = bf.readLine() != null)
+			{
 				
-				String name = "";
-				double wholesalerPrice=0.0;
-				int stock = 0;
-				
-				// read each sections
-				for (int i = 0; i < sections.length; i++) {
-					// split data in key(0) and value(1) 
-					String[] data = sections[i].split(":");
-					
-					switch (i) {
-					case 0:
-						// format product name
-						name = data[1];
-						break;
-						
-					case 1:
-						// format price
-						wholesalerPrice = Double.parseDouble(data[1]);
-						break;
-						
-					case 2:
-						// format stock
-						stock = Integer.parseInt(data[1]);
-						break;
-						
-					default:
-						break;
-					}
-				}
-				// add product to inventory
-				addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
-				
-				// read next line
-				line = br.readLine();
 			}
-			fr.close();
-			br.close();
-			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		
+		
+		// TODO RA1-ISSUE-04: delegar la conversio de cada linia a parseProductLine.
+		// TODO RA1-ISSUE-11: tractar fitxer absent o error de lectura amb un missatge comprensible.
+		System.out.println("RA1-ISSUE-03 pendent: encara no s'ha carregat " + f.getPath());
+	}
+
+	/**
+	 * Convert a valid line from items.txt into a Product.
+	 */
+	private Product parseProductLine(String line) {
+		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un Product.
+		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
+		return null;
+	}
+
+	/**
+	 * Save the current inventory to items.txt.
+	 */
+	public void saveInventory() {
+		// TODO RA1-ISSUE-09: convertir cada Product en una linia i reescriure items.txt.
+		System.out.println("RA1-ISSUE-09 pendent: encara no s'ha desat l'inventari.");
 	}
 
 	/**
@@ -291,69 +269,24 @@ public class Shop {
 	 * add a new product to inventory getting data from console
 	 */
 	public void addProduct() {
-		if (isInventoryFull()) {
-			System.out.println("No es poden afegir més articles");
-			return;
-		}
-		Scanner scanner = CONSOLE;
-		String lineaExtra = scanner.nextLine();
-
-		System.out.print("Nom: ");
-		String name = scanner.nextLine();
-		System.out.print("Preu majorista: ");
-		double wholesalerPrice = scanner.nextDouble();
-		System.out.print("Estoc: ");
-		int stock = scanner.nextInt();
-
-		addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
+		// TODO RA1-ISSUE-06: demanar dades minimes, crear un Product i afegir-lo a inventory.
+		System.out.println("RA1-ISSUE-06 pendent: encara no es poden afegir articles.");
 	}
 
 	/**
 	 * remove a new product to inventory getting data from console
 	 */
 	public void removeProduct() {
-		if (inventory.size() == 0) {
-			System.out.println("No es poden eliminar articles, l'inventari és buit");
-			return;
-		}
-		Scanner scanner = CONSOLE;
-		System.out.print("Seleccioneu un nom d'article: ");
-		String name = scanner.next();
-		Product product = findProduct(name);
-
-		if (product != null) {
-			// remove it
-			if (inventory.remove(product)) {
-				System.out.println("L'article " + name + " s'ha eliminat");
-
-			} else {
-				System.out.println("No s'ha trobat cap article amb nom " + name);
-			}
-		} else {
-			System.out.println("No s'ha trobat cap article amb nom " + name);
-		}
+		// TODO RA1-ISSUE-08: retirar un Product de inventory sense alterar la resta.
+		System.out.println("RA1-ISSUE-08 pendent: encara no es poden eliminar articles.");
 	}
 
 	/**
 	 * add stock for a specific product
 	 */
 	public void addStock() {
-		Scanner scanner = CONSOLE;
-		System.out.print("Seleccioneu un nom d'article: ");
-		String name = scanner.next();
-		Product product = findProduct(name);
-
-		if (product != null) {
-			// ask for stock
-			System.out.print("Seleccioneu la quantitat a afegir: ");
-			int stock = scanner.nextInt();
-			// update stock product
-			product.setStock(product.getStock() + stock);
-			System.out.println("L'estoc de l'article " + name + " s'ha actualitzat a " + product.getStock());
-
-		} else {
-			System.out.println("No s'ha trobat cap article amb nom " + name);
-		}
+		// TODO RA1-ISSUE-07: trobar un Product i actualitzar el seu estoc.
+		System.out.println("RA1-ISSUE-07 pendent: encara no es pot modificar l'estoc.");
 	}
 
 	/**
@@ -580,3 +513,4 @@ public class Shop {
 	}
 
 }
+
